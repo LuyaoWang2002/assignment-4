@@ -1,14 +1,15 @@
 import requests
 import sys
+from pathlib import Path
 
 # Configuration
-CANVAS_URL = "" # Your Canvas URL (E.g. https://canvas.cmu.edu)
-COURSE_ID = ""  # Our course ID (from the course URL)
-TOPIC_ID = ""  # Discussion topic ID (from the discussion URL)
+CANVAS_URL = "https://canvas.cmu.edu" # Your Canvas URL (E.g. https://canvas.cmu.edu)
+COURSE_ID = "57021"  # Our course ID (from the course URL)
+TOPIC_ID = "867890"  # Discussion topic ID (from the discussion URL)
 
 # Read the access token from file
 try:
-    with open("canvas_token.txt", "r") as f:
+    with Path(__file__).with_name("canvas_token.txt").open(encoding="utf-8") as f:
         ACCESS_TOKEN = f.read().strip()
     
     # Check if token is empty
@@ -29,14 +30,14 @@ headers = {
 
 # The message you want to post
 message_data = {
-    "message": "CHANGE ME"
+    "message": "I like Coke Zero."
 }
 
 # API endpoint for posting to a discussion
 url = f"{CANVAS_URL}/api/v1/courses/{COURSE_ID}/discussion_topics/{TOPIC_ID}/entries"
 
 # Make the POST request
-response = requests.post(url, headers=headers, data=message_data)
+response = requests.post(url, headers=headers, data=message_data, timeout=15)
 
 # Check if it worked
 if response.status_code == 201:
